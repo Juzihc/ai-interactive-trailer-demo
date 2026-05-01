@@ -1,3 +1,225 @@
+﻿# GPT 项目交接包
+
+## 当前进度
+- 已完成一个 Next.js 15 + React 19 的单页 Demo。
+- 主题是“腾讯视频 AI 参与式互动预告 Demo”。
+- 页面已完成视觉界面、交互逻辑、双分支剧情、AI 生成感展示、埋点模拟、平台价值说明等内容。
+- 当前项目可以成功执行生产构建。
+
+## 已验证状态
+- 构建命令：`npm.cmd run build`
+- 结果：通过
+- 首页路由：`/`
+- 渲染方式：静态页面
+
+## 项目说明
+- 这是一个前端展示型 Demo，不包含真实后端、数据库、鉴权、真实视频播放器 SDK 或真实 AI 接口。
+- 当前“AI 生成”“互动埋点”“预约点击”等都是前端状态机模拟，用于演示产品方案。
+- 核心逻辑几乎都在 `app/page.tsx` 中。
+
+## 项目结构
+```text
+D:\腾讯ai产品大赛
+├─ app
+│  ├─ globals.css
+│  ├─ layout.tsx
+│  └─ page.tsx
+├─ public
+│  └─ rose-poster.jpg
+├─ .gitignore
+├─ next-env.d.ts
+├─ package.json
+├─ postcss.config.js
+├─ tailwind.config.ts
+└─ tsconfig.json
+```
+
+## 建议直接发给 GPT 的提示词
+你现在接手一个已经完成到“高保真前端 Demo”阶段的项目。请先完整理解现有代码，再继续开发，不要推翻重做。
+
+项目背景：
+- 这是一个“腾讯视频 AI 参与式互动预告 Demo”。
+- 目标是演示：在长视频平台中，用户看完预告后，在悬念点进行选择；系统根据选择生成不同情绪版本的后续预告内容，从而提升完播率、互动率、预约转化和追更意愿。
+- 当前项目是一个纯前端 Demo，没有真实后端与 AI API，所有 AI 生成、埋点和预约动作都是前端模拟。
+
+技术栈：
+- Next.js 15（App Router）
+- React 19
+- TypeScript
+- Tailwind CSS
+
+你需要先理解这些事实：
+- 核心页面文件是 `app/page.tsx`。
+- 代码已经实现了完整的状态流转：`intro -> trailer -> choice -> result -> done`。
+- 用户有两个选项：`A` 表示更情绪化地“去见他”，`B` 表示更理性地“先不去”。
+- 选择后会触发前端模拟的“AI 生成”，然后播放对应分支的专属结果内容。
+- 页面同时还展示产品价值、用户痛点、平台收益、试点指标、落地场景、商业化扩展等内容。
+- 当前重点不是从零开始，而是在现有 Demo 基础上继续增强。
+
+你接下来要做的事：
+1. 先完整阅读下面所有代码。
+2. 总结当前已实现功能、未实现能力、代码结构和可优化点。
+3. 如果我要你继续开发，请优先在现有视觉和交互基础上迭代，不要改掉整体产品方向。
+4. 如果你要重构，请尽量保持 UI 视觉和交互行为一致。
+
+下面是完整源码。
+
+## 文件：package.json
+
+```json
+{
+  "name": "interactive-trailer-demo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"
+  }
+}
+```
+
+## 文件：tsconfig.json
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+```
+
+## 文件：postcss.config.js
+
+```js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+```
+
+## 文件：tailwind.config.ts
+
+```ts
+import type { Config } from "tailwindcss";
+
+const config: Config = {
+  content: ["./app/**/*.{js,ts,jsx,tsx,mdx}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+
+export default config;
+```
+
+## 文件：.gitignore
+
+```
+node_modules
+.next
+
+```
+
+## 文件：app\layout.tsx
+
+```tsx
+import type { Metadata } from "next";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "腾讯视频互动预告 Demo",
+  description: "长视频平台内的互动预告片功能演示",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="zh-CN">
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+## 文件：app\globals.css
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: #050505;
+  color: #ffffff;
+}
+
+body {
+  font-family:
+    "PingFang SC",
+    "Microsoft YaHei",
+    "Noto Sans SC",
+    sans-serif;
+}
+
+button {
+  font: inherit;
+}
+```
+
+## 文件：app\page.tsx
+
+```tsx
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -13,16 +235,7 @@ type AnalyticsEvent = {
   detail: string;
 };
 
-type DashboardMetric = {
-  title: string;
-  normal: number;
-  ai: number;
-  uplift: string;
-  hint: string;
-};
-
 type RecompositionDetail = {
-  toneLabel: string;
   scene: string;
   dialogue: string;
   music: string;
@@ -56,26 +269,24 @@ const PLATFORM_VALUES = [
 ];
 const PREVIEW_RECOMPOSITION: Record<UserChoice, RecompositionDetail> = {
   A: {
-    toneLabel: "冲动、心动、不顾一切",
-    scene: "雨夜街头、推开门的瞬间、一路奔向答案的靠近",
-    dialogue: "“有些事，不做会后悔一辈子。”",
-    music: "弦乐上扬，快节奏剪辑",
-    rhythm: "镜头更近、更快、更热，情绪一路顶到见面那一刻",
-    roleTitle: "情绪化路径：她决定不再后退",
-    roleDescription: "这一次她选择把心动推到最前面，哪怕冒险，也要亲自把答案听清楚。",
-    keywords: ["冲动", "心动", "不顾一切"],
-    aiSummary: "AI 会把内容收向雨夜街头、推门见面的瞬间和不再犹豫的心跳感。",
+    scene: "夜雨楼下、电梯厅、即将见面的停顿",
+    dialogue: "“你终于还是来了。”",
+    music: "低频脉冲与更强烈的节奏推进",
+    rhythm: "切镜更快，冲突感更近，情绪持续上扬",
+    roleTitle: "当前更接近主角式推进",
+    roleDescription: "愿意先往前一步，用行动把关系推向答案。",
+    keywords: ["主动", "冲突", "推进"],
+    aiSummary: "AI 会把内容收向冲突、心动和见面后的不确定。",
   },
   B: {
-    toneLabel: "克制、清醒、自我保护",
-    scene: "窗边独坐、手机屏幕熄灭、把情绪留给自己的夜色",
-    dialogue: "“爱一个人，也要先爱自己。”",
-    music: "钢琴低沉，慢镜头留白",
-    rhythm: "停顿更久、镜头更稳、留白更明显，情绪被收进内心",
-    roleTitle: "理性路径：她先把自己放回中心",
-    roleDescription: "她没有冲出去，而是先守住边界，把这一夜留给更清醒的决定。",
-    keywords: ["克制", "清醒", "自我保护"],
-    aiSummary: "AI 会把内容收向窗边独坐、熄屏留白和先照顾自己的理性版本。",
+    scene: "空旷走廊、夜色街角、手机熄屏后的留白",
+    dialogue: "“不是所有答案，都要今晚说清。”",
+    music: "钢琴留白与更安静的环境氛围",
+    rhythm: "停顿更长，镜头更稳，情绪收得更内敛",
+    roleTitle: "当前更接近理性角色路径",
+    roleDescription: "先守住边界，再决定关系要不要继续靠近。",
+    keywords: ["克制", "留白", "反思"],
+    aiSummary: "AI 会把内容收向克制、留白和更安静的情绪版本。",
   },
 };
 const COMPARISON_POINTS = [
@@ -90,44 +301,6 @@ const METRIC_ASSUMPTIONS = [
   ["下一集点击率", "+10%", "通过情绪延续，带动对正片的即时点击"],
   ["追更留存", "+8%", "形成“看完一集就期待下一集”的稳定习惯"],
 ];
-const DASHBOARD_METRICS: DashboardMetric[] = [
-  {
-    title: "预告完播率",
-    normal: 62,
-    ai: 85,
-    uplift: "+23%",
-    hint: "片尾悬念点被完整看完的比例显著提升",
-  },
-  {
-    title: "互动参与率",
-    normal: 0,
-    ai: 41,
-    uplift: "+41%",
-    hint: "互动选择让用户从被动观看转向主动参与",
-  },
-  {
-    title: "预约转化率",
-    normal: 12,
-    ai: 27,
-    uplift: "+15%",
-    hint: "在情绪峰值处直接承接预约动作",
-  },
-  {
-    title: "下一集点击意愿",
-    normal: 38,
-    ai: 56,
-    uplift: "+18%",
-    hint: "延长预告强化对后续正片的即时兴趣",
-  },
-];
-const DASHBOARD_EVENT_TIMELINE = [
-  { time: "22:41:08", event: "trailer_enter" },
-  { time: "22:41:15", event: "suspense_pause" },
-  { time: "22:41:18", event: "choice_submit" },
-  { time: "22:41:20", event: "ai_preview_generate" },
-  { time: "22:41:24", event: "extended_preview_play" },
-  { time: "22:41:31", event: "episode_reserve_click" },
-] as const;
 const DEPLOYMENT_SCENARIOS = [
   "片尾自动播放下一集互动预告，作为默认片尾承接能力。",
   "会员专属互动预告，优先在高热剧和高讨论剧集试点。",
@@ -153,24 +326,16 @@ const RESULT_SCENES: Record<
   { badge: string; title: string; description: string; lines: string[] }
 > = {
   A: {
-    badge: "情绪上扬版",
+    badge: "更靠近答案的版本",
     title: "让她去见他",
-    description: "她冲进雨夜，推开门的那一刻，所有压住的心意都不想再藏。",
-    lines: [
-      "雨夜街头的脚步越来越快。",
-      "门被推开的瞬间，呼吸和镜头一起贴近。",
-      "弦乐猛地上扬，这一版不再给犹豫留位置。",
-    ],
+    description: "她终于愿意下楼，把迟来的那句话留给见面。",
+    lines: ["她走向电梯。", "电梯门在她面前打开。", "有些答案，只有见面才知道。"],
   },
   B: {
-    badge: "理性留白版",
+    badge: "更靠近自我的版本",
     title: "让她不去",
-    description: "她坐回窗边，让手机屏幕熄灭，也让自己重新站回决定的中心。",
-    lines: [
-      "她没有下楼，而是把夜色慢慢收回房间里。",
-      "屏幕熄灭后，只剩呼吸和安静的钢琴声。",
-      "慢镜头停在她的侧脸，这一版把答案留给她自己。",
-    ],
+    description: "她没有把情绪交出去，而是先把自己留在这一夜里。",
+    lines: ["她把手机屏幕按灭。", "她没有回头，转身走进夜色。", "有些成长，是不再回头。"],
   },
 };
 const REVIEWS = [
@@ -183,55 +348,9 @@ const EPISODES = Array.from({ length: 25 }, (_, index) => {
   return { number, vip: number >= 3, active: number === 13, preview: number === 13 };
 });
 
-const GENERATION_STEPS = [
-  "正在分析你的选择偏好…",
-  "匹配情绪向量：都市情感 / 高张力…",
-  "正在重组第13集预告片段…",
-  "你的专属版本已生成 ✓",
-] as const;
-const BRANCH_VISUALS: Record<
-  UserChoice,
-  {
-    ambient: string;
-    surface: string;
-    chip: string;
-    pill: string;
-    softCard: string;
-    accentText: string;
-    mutedText: string;
-  }
-> = {
-  A: {
-    ambient:
-      "bg-[radial-gradient(circle_at_74%_32%,rgba(255,151,99,0.24),transparent_28%),radial-gradient(circle_at_28%_74%,rgba(255,211,138,0.14),transparent_34%)]",
-    surface:
-      "border-[#ffb17a]/18 bg-[linear-gradient(180deg,rgba(40,21,13,0.88),rgba(18,12,10,0.72))]",
-    chip: "bg-[#3b2419]/72 text-[#ffd3ad]",
-    pill: "border-[#ffb17a]/20 bg-[#2f1912]/74 text-[#ffd1ab]",
-    softCard:
-      "border-[#ffb17a]/14 bg-[linear-gradient(180deg,rgba(54,28,15,0.56),rgba(18,12,10,0.28))]",
-    accentText: "text-[#ffbf8a]",
-    mutedText: "text-[#ffd9bf]",
-  },
-  B: {
-    ambient:
-      "bg-[radial-gradient(circle_at_76%_30%,rgba(125,232,255,0.2),transparent_30%),radial-gradient(circle_at_22%_76%,rgba(102,134,255,0.14),transparent_34%)]",
-    surface:
-      "border-[#1fd7ff]/18 bg-[linear-gradient(180deg,rgba(10,20,28,0.88),rgba(10,13,18,0.72))]",
-    chip: "bg-[#102735]/72 text-[#bfefff]",
-    pill: "border-[#1fd7ff]/18 bg-[#0f202a]/74 text-[#bfefff]",
-    softCard:
-      "border-[#1fd7ff]/14 bg-[linear-gradient(180deg,rgba(10,34,46,0.54),rgba(10,13,18,0.28))]",
-    accentText: "text-[#7de8ff]",
-    mutedText: "text-[#d1f7ff]",
-  },
-};
-
 const LINE_DURATION = 1500;
 const FADE_DURATION = 220;
-const GENERATION_STEP_DELAY = 650;
-const GENERATION_CHAR_INTERVAL = 26;
-const GENERATE_DURATION = 2800;
+const GENERATE_DURATION = 1400;
 const AUTO_RESERVE_DELAY = 1200;
 const TRAILER_PROGRESS_MAX = 82;
 const TOTAL_FAKE_SECONDS = 28;
@@ -261,8 +380,8 @@ function getMemoryPrompt(choice: UserChoice | null) {
 
 function getEmotionLine(choice: UserChoice) {
   return choice === "B"
-    ? "爱一个人，也要先爱自己。"
-    : "有些事，不做会后悔一辈子。";
+    ? "她明白，有些决定不是拒绝谁，而是先把自己安放好。"
+    : "她知道，真正难的不是见面，而是承认自己仍然在意。";
 }
 
 function getGeneratedVersionLabel(version: GeneratedVersion) {
@@ -336,48 +455,9 @@ export default function Page() {
   const [reserved, setReserved] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [eventLogs, setEventLogs] = useState<AnalyticsEvent[]>([]);
-  const [generationStepIndex, setGenerationStepIndex] = useState(-1);
-  const [generationTypedChars, setGenerationTypedChars] = useState(0);
   const fadeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const generateTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const reserveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    if (!isGenerating) {
-      setGenerationStepIndex(-1);
-      setGenerationTypedChars(0);
-      return;
-    }
-
-    const generationTimeouts: ReturnType<typeof setTimeout>[] = [];
-    const generationIntervals: ReturnType<typeof setInterval>[] = [];
-
-    GENERATION_STEPS.forEach((step, index) => {
-      const startStepTimeout = setTimeout(() => {
-        setGenerationStepIndex(index);
-        setGenerationTypedChars(0);
-
-        let charCount = 0;
-        const typingInterval = setInterval(() => {
-          charCount += 1;
-          setGenerationTypedChars(charCount);
-
-          if (charCount >= step.length) {
-            clearInterval(typingInterval);
-          }
-        }, GENERATION_CHAR_INTERVAL);
-
-        generationIntervals.push(typingInterval);
-      }, index * GENERATION_STEP_DELAY);
-
-      generationTimeouts.push(startStepTimeout);
-    });
-
-    return () => {
-      generationTimeouts.forEach(clearTimeout);
-      generationIntervals.forEach(clearInterval);
-    };
-  }, [isGenerating]);
 
   useEffect(() => {
     return () => {
@@ -552,79 +632,10 @@ export default function Page() {
 
   const sceneMeta = userChoice ? RESULT_SCENES[userChoice] : null;
   const personalization = userChoice ? PREVIEW_RECOMPOSITION[userChoice] : null;
-  const branchVisual = userChoice ? BRANCH_VISUALS[userChoice] : null;
   const versionLabel = getGeneratedVersionLabel(generatedVersion);
   const versionTitle = getGeneratedVersionTitle(generatedVersion);
-  const dashboardEvents = DASHBOARD_EVENT_TIMELINE.map((item) => {
-    switch (item.event) {
-      case "trailer_enter":
-        return {
-          ...item,
-          description:
-            phase === "intro"
-              ? "等待用户进入第13集预告。"
-              : "用户已进入第13集互动预告，开始片尾承接。",
-          status: phase === "intro" ? "等待中" : "已触发",
-          active: phase !== "intro",
-        };
-      case "suspense_pause":
-        return {
-          ...item,
-          description:
-            phase === "choice" || phase === "result" || phase === "done"
-              ? "预告已在悬念点暂停，成功把用户带入选择节点。"
-              : "预告仍在推进，等待到达悬念停顿点。",
-          status:
-            phase === "choice" || phase === "result" || phase === "done" ? "已触发" : "等待中",
-          active: phase === "choice" || phase === "result" || phase === "done",
-        };
-      case "choice_submit":
-        return {
-          ...item,
-          description: userChoice
-            ? `用户已完成互动选择：${userChoice === "A" ? "去见他" : "先不去"}。`
-            : "等待用户做出剧情选择，触发个性化生成。",
-          status: userChoice ? "已触发" : "等待中",
-          active: Boolean(userChoice),
-        };
-      case "ai_preview_generate":
-        return {
-          ...item,
-          description: isGenerating
-            ? "AI 正在重组片段、匹配情绪节奏并生成专属版本。"
-            : generatedVersion
-              ? `${versionTitle} 已生成完成，内容可继续播放。`
-              : "尚未进入生成阶段。",
-          status: isGenerating ? "生成中" : generatedVersion ? "已完成" : "等待中",
-          active: isGenerating || Boolean(generatedVersion),
-        };
-      case "extended_preview_play":
-        return {
-          ...item,
-          description:
-            phase === "result" || phase === "done"
-              ? `用户正在观看${versionTitle}带来的延长预告内容。`
-              : "专属预告尚未播放。",
-          status:
-            phase === "result" ? "播放中" : phase === "done" ? "已触发" : "等待中",
-          active: phase === "result" || phase === "done",
-        };
-      case "episode_reserve_click":
-        return {
-          ...item,
-          description: reserved
-            ? "用户已点击预约正片，完成转化动作。"
-            : phase === "done"
-              ? "预约入口已出现，正在等待用户点击。"
-              : "预约入口尚未露出。",
-          status: reserved ? "已转化" : phase === "done" ? "待转化" : "等待中",
-          active: reserved || phase === "done",
-        };
-    }
-  });
   const memoryPrompt = getMemoryPrompt(lastChoiceMemory);
   const currentTime = formatTime(Math.round((progress / 100) * TOTAL_FAKE_SECONDS));
-  const dashboardTriggeredCount = dashboardEvents.filter((item) => item.active).length;
   const showControls =
     isHovered || phase === "intro" || phase === "choice" || phase === "done" || isPaused || isGenerating;
   const playerStatus =
@@ -733,11 +744,6 @@ export default function Page() {
             >
               <div className="relative aspect-video overflow-hidden bg-black">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_14%_40%,rgba(239,215,158,0.28),transparent_28%),radial-gradient(circle_at_62%_34%,rgba(255,255,255,0.12),transparent_24%),radial-gradient(circle_at_80%_72%,rgba(130,90,60,0.34),transparent_25%)]" />
-                {userChoice && phase !== "intro" && phase !== "choice" && (
-                  <div
-                    className={`absolute inset-0 transition-opacity duration-700 ${BRANCH_VISUALS[userChoice].ambient}`}
-                  />
-                )}
                 <div className="absolute -left-[3%] top-0 h-full w-[11%] bg-[linear-gradient(90deg,rgba(56,35,20,0.76),rgba(130,91,64,0.12),transparent)]" />
                 <div className="absolute left-[8%] top-0 h-full w-[8%] bg-[linear-gradient(90deg,rgba(255,239,194,0.22),rgba(255,255,255,0.05),transparent)] blur-[2px]" />
                 <div className="absolute right-[12%] top-[10%] h-[72%] w-[32%] rounded-[42%] bg-[radial-gradient(circle_at_42%_34%,rgba(247,226,204,0.42),rgba(83,54,37,0.78)_52%,rgba(26,21,19,0.96)_82%)] opacity-80 blur-[1px]" />
@@ -790,18 +796,8 @@ export default function Page() {
                 )}
 
                 {generatedVersion && phase !== "intro" && phase !== "choice" && (
-                  <div
-                    className={`absolute right-7 top-20 rounded-[20px] border px-4 py-3 text-left shadow-[0_16px_42px_rgba(0,0,0,0.22)] backdrop-blur-md ${
-                      branchVisual?.surface ?? "border-white/12 bg-[linear-gradient(180deg,rgba(9,19,26,0.86),rgba(9,19,26,0.7))]"
-                    }`}
-                  >
-                    <p
-                      className={`text-[10px] tracking-[0.26em] uppercase ${
-                        branchVisual?.accentText ?? "text-white/45"
-                      }`}
-                    >
-                      AI 定制版
-                    </p>
+                  <div className="absolute right-7 top-20 rounded-[20px] border border-white/12 bg-[linear-gradient(180deg,rgba(9,19,26,0.86),rgba(9,19,26,0.7))] px-4 py-3 text-left shadow-[0_16px_42px_rgba(0,0,0,0.22)] backdrop-blur-md">
+                    <p className="text-[10px] tracking-[0.26em] text-white/45 uppercase">AI 定制版</p>
                     <p className="mt-1 text-sm font-medium text-white/88">{versionTitle}</p>
                   </div>
                 )}
@@ -886,71 +882,25 @@ export default function Page() {
 
                 {phase === "result" && isGenerating && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/74 px-5 backdrop-blur-md">
-                    <div
-                      className={`w-full max-w-xl rounded-[28px] border px-8 py-8 text-left shadow-[0_28px_90px_rgba(0,0,0,0.45)] ${
-                        branchVisual?.surface ?? "border-[#1fd7ff]/16 bg-[#11161a]/94"
-                      }`}
-                    >
-                      <p className="text-xs tracking-[0.32em] text-[#7de8ff] uppercase">AI 生成中</p>
-                      <h3 className="mt-3 text-[28px] font-semibold text-white">{versionLabel}</h3>
-                      <p className="mt-3 text-sm leading-7 text-white/70">
+                    <div className="w-full max-w-xl rounded-[28px] border border-[#1fd7ff]/16 bg-[#11161a]/94 px-8 py-8 text-center shadow-[0_28px_90px_rgba(0,0,0,0.45)]">
+                      <div className="mx-auto h-12 w-12 rounded-full border-2 border-[#1fd7ff]/18 border-t-[#1fd7ff] animate-spin" />
+                      <p className="mt-6 text-xs tracking-[0.32em] text-[#77e8ff] uppercase">AI 生成中</p>
+                      <h3 className="mt-3 text-[28px] font-semibold">{versionLabel}</h3>
+                      <p className="mt-4 text-sm leading-7 text-white/66">
                         {emotion === "rational"
-                          ? "系统正在收拢情绪、拉长留白，并把这一版预告推向更理性的节奏。"
-                          : "系统正在提升情绪张力、压缩犹豫留白，并把这一版预告推向更直接的心动。"}
+                          ? "正在把这一版预告收向更安静的情绪，让她先照顾好自己。"
+                          : "正在把这一版预告推向更直接的心意，让迟到的答案更靠近她。"}
                       </p>
-                      <div className="mt-6 space-y-3">
-                        {GENERATION_STEPS.map((step, index) => {
-                          const isComplete =
-                            index < generationStepIndex ||
-                            (index === generationStepIndex && generationTypedChars >= step.length);
-                          const isActive = index === generationStepIndex;
-                          const visibleText =
-                            index < generationStepIndex
-                              ? step
-                              : index === generationStepIndex
-                                ? step.slice(0, generationTypedChars)
-                                : "";
-
-                          return (
-                            <div key={step} className="flex min-h-[28px] items-start gap-3">
-                              <span
-                                className={`mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full transition-all duration-300 ${
-                                  isComplete || isActive
-                                    ? "bg-[#7de8ff] shadow-[0_0_14px_rgba(125,232,255,0.45)]"
-                                    : "bg-white/18"
-                                } ${isActive ? "animate-pulse" : ""}`}
-                              />
-                              <p
-                                className={`text-sm leading-7 ${
-                                  index === GENERATION_STEPS.length - 1 && isComplete
-                                    ? "text-[#7de8ff]"
-                                    : "text-white/70"
-                                }`}
-                              >
-                                {visibleText}
-                                {isActive && generationTypedChars < step.length && (
-                                  <span className="ml-0.5 inline-block h-4 w-px translate-y-[2px] bg-[#7de8ff] animate-pulse" />
-                                )}
-                              </p>
-                            </div>
-                          );
-                        })}
-                      </div>
                     </div>
                   </div>
                 )}
 
                 {personalization && phase !== "intro" && phase !== "choice" && !isGenerating && (
-                  <div
-                    className={`absolute right-7 top-36 w-[300px] rounded-[24px] border p-4 shadow-[0_20px_52px_rgba(0,0,0,0.28)] backdrop-blur-lg ${
-                      branchVisual?.surface ??
-                      "border-white/10 bg-[linear-gradient(180deg,rgba(10,15,19,0.84),rgba(15,15,15,0.68))]"
-                    }`}
-                  >
+                  <div className="absolute right-7 top-36 w-[300px] rounded-[24px] border border-white/10 bg-[linear-gradient(180deg,rgba(10,15,19,0.84),rgba(15,15,15,0.68))] p-4 shadow-[0_20px_52px_rgba(0,0,0,0.28)] backdrop-blur-lg">
                     <p className="text-[11px] tracking-[0.26em] text-[#7fe6ff] uppercase">
                       角色路径反馈
                     </p>
-                    <h4 className={`mt-2 text-[20px] font-semibold ${branchVisual?.mutedText ?? "text-white"}`}>
+                    <h4 className="mt-2 text-[20px] font-semibold text-white">
                       {personalization.roleTitle}
                     </h4>
                     <p className="mt-2 text-sm leading-7 text-white/68">
@@ -962,7 +912,7 @@ export default function Page() {
                         {personalization.keywords.map((keyword) => (
                           <span
                             key={keyword}
-                            className={`rounded-full px-3 py-1.5 text-xs ${branchVisual?.chip ?? "bg-white/[0.05] text-white/72"}`}
+                            className="rounded-full bg-white/[0.05] px-3 py-1.5 text-xs text-white/72"
                           >
                             {keyword}
                           </span>
@@ -974,11 +924,7 @@ export default function Page() {
 
                 {phase === "done" && sceneMeta && (
                   <div className="absolute inset-x-0 bottom-40 flex flex-col items-center gap-4 px-6 text-center md:bottom-44">
-                    <div
-                      className={`rounded-full border px-5 py-2 text-sm tracking-[0.24em] uppercase ${
-                        branchVisual?.pill ?? "border-white/10 bg-black/42 text-white/64"
-                      }`}
-                    >
+                    <div className="rounded-full border border-white/10 bg-black/42 px-5 py-2 text-sm tracking-[0.24em] text-white/64 uppercase">
                       当前版本：{sceneMeta.title}
                     </div>
                     <button
@@ -1337,52 +1283,32 @@ export default function Page() {
               <p className="mt-4 text-sm leading-7 text-white/68">{memoryPrompt}</p>
 
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                <div
-                  className={`rounded-[20px] border p-4 ${
-                    branchVisual?.softCard ?? "border-white/8 bg-black/18"
-                  }`}
-                >
-                  <p className={`text-sm ${branchVisual?.accentText ?? "text-white/46"}`}>情绪标签</p>
+                <div className="rounded-[20px] border border-white/8 bg-black/18 p-4">
+                  <p className="text-sm text-white/46">这一版的走向</p>
                   <p className="mt-2 text-[24px] font-semibold text-white">
-                    {personalization ? personalization.toneLabel : "还未展开"}
+                    {emotion === "rational"
+                      ? "把自己放在前面"
+                      : emotion === "emotional"
+                        ? "朝答案再走一步"
+                        : "还未展开"}
                   </p>
                 </div>
-                <div
-                  className={`rounded-[20px] border p-4 ${
-                    branchVisual?.softCard ?? "border-white/8 bg-black/18"
-                  }`}
-                >
-                  <p className={`text-sm ${branchVisual?.accentText ?? "text-white/46"}`}>音乐节奏</p>
+                <div className="rounded-[20px] border border-white/8 bg-black/18 p-4">
+                  <p className="text-sm text-white/46">情绪节奏</p>
                   <p className="mt-2 text-[24px] font-semibold text-white">
-                    {personalization ? personalization.music : "还未生成"}
+                    {rational === null ? "还未生成" : rational ? "克制、留白、慢下来" : "靠近、犹豫、再向前"}
                   </p>
                 </div>
               </div>
 
-              <div
-                className={`mt-4 rounded-[20px] border p-4 ${
-                  branchVisual?.softCard ?? "border-[#1fd7ff]/12 bg-[#081118]/58"
-                }`}
-              >
-                <p className="text-sm text-[#7fe6ff]">当前预告版本</p>
+              <div className="mt-4 rounded-[20px] border border-[#1fd7ff]/12 bg-[#081118]/58 p-4">
+                  <p className="text-sm text-[#7fe6ff]">当前预告版本</p>
                 <p className="mt-2 text-[22px] font-semibold text-white">{versionLabel}</p>
                 <p className="mt-3 text-sm leading-7 text-white/62">
                   {sceneMeta
                     ? sceneMeta.description
                     : "预告将在结尾悬念点暂停，弹出双选项，用户选择后播放对应的彩蛋式剧情。"}
                 </p>
-                {personalization && (
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {personalization.keywords.map((keyword) => (
-                      <span
-                        key={keyword}
-                        className={`rounded-full px-3 py-1.5 text-xs ${branchVisual?.chip ?? "bg-white/[0.05] text-white/72"}`}
-                      >
-                        {keyword}
-                      </span>
-                    ))}
-                  </div>
-                )}
               </div>
 
               <div className="mt-4 rounded-[20px] bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4 ring-1 ring-white/[0.05]">
@@ -1445,237 +1371,26 @@ export default function Page() {
           </aside>
         </div>
 
-        <section className="mt-7 overflow-hidden rounded-[30px] border border-[#1fd7ff]/10 bg-[linear-gradient(135deg,rgba(13,18,24,0.96),rgba(17,17,17,0.98))] p-5 shadow-[0_22px_80px_rgba(0,0,0,0.24)] ring-1 ring-white/[0.04] md:p-6">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-3xl">
-              <p className="text-[11px] tracking-[0.3em] text-[#7de8ff] uppercase">Live Metrics</p>
-              <h3 className="mt-3 text-[28px] font-semibold text-white">实时效果看板</h3>
+        <section className="mt-8 rounded-[28px] bg-[linear-gradient(135deg,rgba(17,23,28,0.96),rgba(18,18,18,0.98))] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.2)] ring-1 ring-white/[0.05]">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+            <div className="max-w-xl">
+              <p className="text-[11px] tracking-[0.3em] text-[#7de8ff] uppercase">平台价值</p>
+              <h3 className="mt-3 text-[24px] font-semibold text-white">把片尾预告变成转化入口</h3>
               <p className="mt-3 text-sm leading-7 text-white/62">
-                模拟展示 AI 互动预告在播放链路中的用户行为、内容生成与转化效果
+                提升预告完播率、互动率和预约转化，同时沉淀更细的情绪选择数据，反哺推荐。
               </p>
             </div>
-            <div className="flex flex-wrap gap-3">
-              <div className="rounded-full border border-white/8 bg-white/[0.04] px-4 py-2 text-sm text-white/62">
-                已联动事件 <span className="ml-2 text-[#7de8ff]">{dashboardTriggeredCount}/6</span>
-              </div>
-              <div className="rounded-full border border-white/8 bg-white/[0.04] px-4 py-2 text-sm text-white/62">
-                当前阶段 <span className="ml-2 text-[#7de8ff]">{playerStatus}</span>
-              </div>
-            </div>
-          </div>
 
-          <div className="mt-6 grid gap-5 xl:grid-cols-[1.05fr_1.15fr]">
-            <div className="rounded-[26px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.18)]">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-[11px] tracking-[0.26em] text-[#7de8ff] uppercase">实时埋点流</p>
-                  <h4 className="mt-2 text-[22px] font-semibold text-white">实时埋点流</h4>
-                  <p className="mt-3 max-w-xl text-sm leading-7 text-white/60">
-                    从用户选择到专属预告生成，关键行为被转化为可运营的数据事件。
-                  </p>
-                </div>
-                <div className="rounded-full bg-white/[0.04] px-3 py-1 text-xs tracking-[0.18em] text-white/42 uppercase">
-                  {eventLogs.length} 条联动日志
-                </div>
-              </div>
-
-              <div className="mt-5 max-h-[430px] space-y-3 overflow-y-auto pr-1">
-                {dashboardEvents.map((item, index) => {
-                  const isWaiting = item.status === "等待中";
-                  const isWorking = item.status === "生成中" || item.status === "播放中";
-                  const isConversion = item.status === "已转化" || item.status === "待转化";
-
-                  return (
-                    <div
-                      key={item.event}
-                      className={`relative overflow-hidden rounded-[22px] border px-4 py-4 transition-all duration-300 ${
-                        item.active
-                          ? "border-[#1fd7ff]/12 bg-[linear-gradient(180deg,rgba(13,29,38,0.46),rgba(255,255,255,0.02))]"
-                          : "border-white/6 bg-white/[0.02]"
-                      }`}
-                    >
-                      {index < dashboardEvents.length - 1 && (
-                        <div className="pointer-events-none absolute left-[21px] top-[44px] h-[calc(100%-16px)] w-px bg-[linear-gradient(180deg,rgba(125,232,255,0.32),rgba(255,255,255,0))]" />
-                      )}
-                      <div className="flex gap-4">
-                        <div className="pt-1">
-                          <span
-                            className={`block h-3 w-3 rounded-full transition-all duration-300 ${
-                              isWaiting
-                                ? "bg-white/18"
-                                : isWorking
-                                  ? "bg-[#7de8ff] shadow-[0_0_18px_rgba(125,232,255,0.5)] animate-pulse"
-                                  : isConversion
-                                    ? "bg-[#ffd58f] shadow-[0_0_16px_rgba(255,213,143,0.36)]"
-                                    : "bg-[#7de8ff] shadow-[0_0_14px_rgba(125,232,255,0.36)]"
-                            }`}
-                          />
-                        </div>
-
-                        <div className="min-w-0 flex-1">
-                          <div className="flex flex-wrap items-center justify-between gap-3">
-                            <div className="flex min-w-0 flex-wrap items-center gap-3">
-                              <span className="text-xs tracking-[0.16em] text-white/38">{item.time}</span>
-                              <span className="rounded-full bg-black/22 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-white/58">
-                                {item.event}
-                              </span>
-                            </div>
-                            <span
-                              className={`rounded-full px-3 py-1 text-[11px] font-medium tracking-[0.16em] ${
-                                isWaiting
-                                  ? "bg-white/[0.04] text-white/40"
-                                  : isWorking
-                                    ? "bg-[#123341] text-[#7de8ff]"
-                                    : isConversion
-                                      ? "bg-[#3f2d15] text-[#ffdba6]"
-                                      : "bg-[#102735] text-[#bfefff]"
-                              }`}
-                            >
-                              {item.status}
-                            </span>
-                          </div>
-                          <p className="mt-3 text-sm leading-7 text-white/64">{item.description}</p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              {DASHBOARD_METRICS.map((metric) => (
+            <div className="grid flex-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              {PLATFORM_VALUES.map(([title, detail]) => (
                 <div
-                  key={metric.title}
-                  className="rounded-[24px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.16)]"
+                  key={title}
+                  className="rounded-[22px] bg-white/[0.04] p-4 ring-1 ring-white/[0.05]"
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-sm text-white/52">{metric.title}</p>
-                      <p className="mt-2 text-[30px] font-semibold text-[#7de8ff]">{metric.ai}%</p>
-                    </div>
-                    <div className="rounded-full bg-[#102735] px-3 py-1 text-sm font-semibold text-[#7de8ff]">
-                      {metric.uplift}
-                    </div>
-                  </div>
-
-                  <div className="mt-4 space-y-3">
-                    <div>
-                      <div className="mb-2 flex items-center justify-between text-xs text-white/42">
-                        <span>普通预告</span>
-                        <span>{metric.normal}%</span>
-                      </div>
-                      <div className="h-2.5 overflow-hidden rounded-full bg-white/[0.06]">
-                        <div
-                          className="h-full rounded-full bg-[linear-gradient(90deg,rgba(255,255,255,0.2),rgba(255,255,255,0.08))]"
-                          style={{ width: `${metric.normal}%` }}
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="mb-2 flex items-center justify-between text-xs">
-                        <span className="text-white/52">AI互动预告</span>
-                        <span className="font-semibold text-[#7de8ff]">{metric.ai}%</span>
-                      </div>
-                      <div className="h-2.5 overflow-hidden rounded-full bg-[#0e1b22]">
-                        <div
-                          className="h-full rounded-full bg-[linear-gradient(90deg,#18d8ff,#7de8ff)] shadow-[0_0_18px_rgba(31,216,255,0.22)]"
-                          style={{ width: `${metric.ai}%` }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="mt-4 text-sm leading-6 text-white/54">{metric.hint}</p>
+                  <p className="text-sm text-[#7fe6ff]">{title}</p>
+                  <p className="mt-3 text-sm leading-6 text-white/62">{detail}</p>
                 </div>
               ))}
-            </div>
-          </div>
-
-          <div className="mt-6 rounded-[28px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015))] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.16)]">
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <p className="text-[11px] tracking-[0.26em] text-[#7de8ff] uppercase">效果对比图</p>
-                <h4 className="mt-2 text-[24px] font-semibold text-white">普通预告 vs AI互动预告</h4>
-                <p className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
-                  数据为试点效果假设，用于展示互动预告对用户参与和转化链路的潜在提升。
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-6 space-y-5">
-              {DASHBOARD_METRICS.map((metric) => (
-                <div key={metric.title} className="grid gap-4 rounded-[22px] bg-black/14 px-4 py-4 md:grid-cols-[180px_minmax(0,1fr)_92px] md:items-center">
-                  <div>
-                    <p className="text-sm font-medium text-white/88">{metric.title}</p>
-                    <p className="mt-1 text-xs text-white/40">普通 {metric.normal} / AI {metric.ai}</p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <span className="w-12 shrink-0 text-xs text-white/38">普通</span>
-                      <div className="h-3 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
-                        <div
-                          className="h-full rounded-full bg-[linear-gradient(90deg,rgba(255,255,255,0.18),rgba(255,255,255,0.08))]"
-                          style={{ width: `${metric.normal}%` }}
-                        />
-                      </div>
-                      <span className="w-10 shrink-0 text-right text-xs text-white/46">{metric.normal}</span>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <span className="w-12 shrink-0 text-xs text-[#7de8ff]">AI</span>
-                      <div className="h-3 flex-1 overflow-hidden rounded-full bg-[#0c1920]">
-                        <div
-                          className="h-full rounded-full bg-[linear-gradient(90deg,#16d8ff,#7de8ff)] shadow-[0_0_22px_rgba(22,216,255,0.22)]"
-                          style={{ width: `${metric.ai}%` }}
-                        />
-                      </div>
-                      <span className="w-10 shrink-0 text-right text-xs font-semibold text-[#7de8ff]">
-                        {metric.ai}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="justify-self-start rounded-full bg-[#102735] px-3 py-1.5 text-sm font-semibold text-[#7de8ff] md:justify-self-end">
-                    {metric.uplift}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-6 rounded-[24px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015))] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.16)]">
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                <div className="max-w-xl">
-                  <p className="text-[11px] tracking-[0.3em] text-[#7de8ff] uppercase">产品价值</p>
-                  <h4 className="mt-2 text-[24px] font-semibold text-white">把片尾预告变成产品转化入口</h4>
-                  <p className="mt-3 text-sm leading-7 text-white/62">
-                    提升预告完播率、互动率和预约转化，同时沉淀更细的情绪选择数据，反哺推荐。
-                  </p>
-                </div>
-
-                <div className="grid flex-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                  {PLATFORM_VALUES.map(([title, detail]) => (
-                    <div
-                      key={title}
-                      className="rounded-[22px] bg-white/[0.04] p-4 ring-1 ring-white/[0.05]"
-                    >
-                      <p className="text-sm text-[#7fe6ff]">{title}</p>
-                      <p className="mt-3 text-sm leading-6 text-white/62">{detail}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 rounded-[22px] border border-[#1fd7ff]/10 bg-[linear-gradient(90deg,rgba(15,33,42,0.94),rgba(18,18,18,0.82))] px-5 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
-              <div className="flex items-start gap-3">
-                <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-[#7de8ff] shadow-[0_0_16px_rgba(125,232,255,0.46)]" />
-                <p className="text-sm leading-7 text-white/72">
-                  AI互动预告的价值不只是让预告更好玩，而是把片尾流失点改造成可交互、可生成、可转化的数据入口。
-                </p>
-              </div>
             </div>
           </div>
         </section>
@@ -1825,3 +1540,20 @@ export default function Page() {
     </main>
   );
 }
+```
+
+## 静态资源说明
+- 图片资源：`public/rose-poster.jpg`
+- 该图片是首页展示所需资源，没有内嵌在本文档里。
+
+## 运行命令
+```bash
+npm install
+npm run dev
+```
+
+在 Windows PowerShell 里如果 `npm` 因执行策略报错，可改用：
+```bash
+npm.cmd run dev
+npm.cmd run build
+```
