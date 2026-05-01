@@ -728,8 +728,7 @@ export default function Page() {
 
               </div>
 
-              <div className="relative border-t border-white/8 bg-[linear-gradient(180deg,rgba(11,11,11,0.98),rgba(17,17,17,1))] px-5 pb-5 pt-3 md:px-7">
-                <div className="pointer-events-none absolute inset-x-0 top-0 h-10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),transparent)] opacity-80" />
+              <div className="relative bg-[linear-gradient(180deg,rgba(11,11,11,0.98),rgba(17,17,17,1))] px-5 pb-5 pt-3 md:px-7">
                 <div className="relative mt-2 rounded-[18px] bg-black/18 px-3 py-3 md:px-4">
                   <div className="flex items-center gap-4">
                     <span
@@ -875,6 +874,7 @@ export default function Page() {
           <aside className="space-y-5">
             <section className="relative overflow-hidden rounded-[28px] bg-[linear-gradient(180deg,#1d1d1d,#171717)] p-5 shadow-[0_22px_60px_rgba(0,0,0,0.25)] ring-1 ring-white/[0.04]">
               <div className="pointer-events-none absolute inset-x-6 top-0 h-20 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_72%)]" />
+              <div className="pointer-events-none absolute inset-x-5 top-5 h-px bg-[linear-gradient(90deg,rgba(255,255,255,0.02),rgba(255,255,255,0.18),rgba(255,255,255,0.02))]" />
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <h2 className="text-[28px] font-semibold">玫瑰的故事</h2>
@@ -882,6 +882,10 @@ export default function Page() {
                 </div>
                 <button type="button" className="text-white/32 transition-colors duration-300 hover:text-white/72">›</button>
               </div>
+
+              <p className="mt-4 text-sm leading-7 text-white/60">
+                腾讯视频热播都市情感剧。把爱情、关系与自我成长放进同一条人生轨迹里。
+              </p>
 
               <div className="mt-5 flex flex-wrap gap-2 text-sm text-white/58">
                 {STORY_TAGS.map((tag) => (
@@ -892,11 +896,56 @@ export default function Page() {
               <div className="mt-5 flex items-center gap-3">
                 <div className="rounded-full bg-white/8 px-4 py-2 text-[15px] font-semibold">8.9分</div>
                 <div className="rounded-full bg-white/8 px-4 py-2 text-[15px] font-semibold">10894</div>
+                <div className="rounded-full bg-[#1b3940] px-4 py-2 text-[15px] font-semibold text-[#7de8ff]">腾讯视频独播</div>
+              </div>
+
+              <div className="mt-6 rounded-[24px] bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4 shadow-[0_18px_48px_rgba(0,0,0,0.24)] ring-1 ring-white/[0.05]">
+                <div className="mx-auto max-w-[248px]">
+                  <div className="mb-3 flex items-center justify-between text-[11px] tracking-[0.2em] text-white/42 uppercase">
+                    <span>官方海报</span>
+                    <span>Rose Story</span>
+                  </div>
+                  <div className="relative overflow-hidden rounded-[24px] shadow-[0_26px_60px_rgba(0,0,0,0.42)] ring-1 ring-white/[0.07]">
+                    <div className="pointer-events-none absolute inset-0 z-10 rounded-[24px] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]" />
+                    <img
+                      src="/rose-poster.jpg"
+                      alt="玫瑰的故事海报"
+                      className="aspect-[3/4.35] w-full object-cover object-center"
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04),transparent_28%,transparent_62%,rgba(0,0,0,0.42))]" />
+                    <div className="absolute inset-x-0 bottom-0 px-4 pb-4">
+                      <div className="rounded-2xl bg-black/42 px-3 py-3 backdrop-blur-sm">
+                        <p className="text-[10px] tracking-[0.22em] text-white/58 uppercase">剧集封面</p>
+                        <p className="mt-1 text-sm font-medium leading-6 text-white">
+                          从此世界在我面前，指向我想去的任何地方
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="mt-5 h-px bg-[linear-gradient(90deg,rgba(31,216,255,0.26),rgba(255,255,255,0.04),transparent)]" />
 
-              <p className="mt-5 text-sm text-white/54">追剧日历 · 全38集 · 会员看全集</p>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-[20px] bg-white/[0.03] px-4 py-4 ring-1 ring-white/[0.05]">
+                  <p className="text-[11px] tracking-[0.22em] text-white/40 uppercase">追剧日历</p>
+                  <p className="mt-2 text-sm font-medium text-white/88">全 38 集 · 会员看全集</p>
+                  <p className="mt-1 text-sm text-white/52">片尾可直达互动预告与预约入口</p>
+                </div>
+                <div className="rounded-[20px] bg-white/[0.03] px-4 py-4 ring-1 ring-white/[0.05]">
+                  <p className="text-[11px] tracking-[0.22em] text-white/40 uppercase">剧情看点</p>
+                  <p className="mt-2 text-sm font-medium text-white/88">爱情 / 关系 / 自我成长</p>
+                  <p className="mt-1 text-sm text-white/52">更适合承接互动预告与情绪分支体验</p>
+                </div>
+              </div>
+
+              <div className="mt-5 rounded-[20px] bg-[#141414] px-4 py-4 ring-1 ring-white/[0.05]">
+                <p className="text-[11px] tracking-[0.22em] text-white/40 uppercase">一句简介</p>
+                <p className="mt-2 text-sm leading-7 text-white/66">
+                  她在爱与成长之间不断重写自己，也在每一次关系选择里，重新决定想成为谁。
+                </p>
+              </div>
 
               <div className="mt-6 rounded-[22px] bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] ring-1 ring-white/[0.04]">
                 <div className="mb-3 flex items-center justify-between px-1 text-[11px] tracking-[0.22em] text-white/34 uppercase">
