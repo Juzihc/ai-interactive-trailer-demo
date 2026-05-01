@@ -48,6 +48,11 @@ const USER_SOLUTION =
   "让用户从“看预告”变成“参与预告”。同一段内容按选择生成不同情绪版本，直接拉高参与、停留和追更意愿。";
 const AI_NECESSITY =
   "AI 按用户选择重组场景、台词与节奏，让同一段预告生成不同情绪版本，而不是固定分支跳转。";
+const HERO_HIGHLIGHTS = [
+  ["互动剧情", "用户在悬念点做出选择，预告开始回应观众"],
+  ["实时生成", "同一段内容被重组为不同情绪版本，形成专属体验"],
+  ["转化承接", "把片尾流失点直接改造成预约与追更入口"],
+];
 const PLATFORM_VALUES = [
   ["预告完播率", "把最容易流失的片尾 10 秒留下来"],
   ["互动率", "把观看动作转成选择动作"],
@@ -703,34 +708,109 @@ export default function Page() {
           </button>
         </header>
 
-        <section className="mb-5 overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,rgba(17,26,32,0.96),rgba(21,21,21,0.98))] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.22)] ring-1 ring-white/[0.05]">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <section className="relative mb-5 overflow-hidden rounded-[32px] border border-white/[0.06] bg-[linear-gradient(135deg,rgba(12,21,28,0.98),rgba(16,16,16,0.98))] p-5 shadow-[0_24px_90px_rgba(0,0,0,0.24)] ring-1 ring-white/[0.04] md:p-6">
+          <div className="pointer-events-none absolute inset-x-8 top-0 h-24 bg-[radial-gradient(circle_at_top,rgba(125,232,255,0.14),transparent_70%)]" />
+          <div className="pointer-events-none absolute -right-10 top-6 h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(34,180,255,0.16),transparent_68%)] blur-2xl" />
+          <div className="pointer-events-none absolute -left-8 bottom-0 h-36 w-36 rounded-full bg-[radial-gradient(circle,rgba(255,205,128,0.12),transparent_68%)] blur-2xl" />
+
+          <div className="flex flex-col gap-5 xl:grid xl:grid-cols-[1.2fr_0.8fr] xl:items-end">
             <div className="max-w-4xl">
-              <p className="text-[11px] tracking-[0.3em] text-[#7de8ff] uppercase">产品命题</p>
-              <h2 className="mt-3 text-[26px] font-semibold leading-tight text-white md:text-[34px]">
+              <div className="inline-flex items-center gap-3 rounded-full border border-[#1fd7ff]/12 bg-[linear-gradient(180deg,rgba(18,32,40,0.92),rgba(17,17,17,0.82))] px-4 py-2 shadow-[0_12px_30px_rgba(0,0,0,0.18)]">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#7de8ff] shadow-[0_0_14px_rgba(125,232,255,0.5)]" />
+                <span className="text-[11px] tracking-[0.28em] text-[#7de8ff] uppercase">Competition Demo</span>
+              </div>
+
+              <p className="mt-5 text-[11px] tracking-[0.3em] text-[#7de8ff] uppercase">产品命题</p>
+              <h2 className="mt-3 max-w-5xl text-[28px] font-semibold leading-tight text-white md:text-[38px] md:leading-[1.14]">
                 {PRODUCT_THESIS}
               </h2>
+              <p className="mt-4 max-w-3xl text-sm leading-7 text-white/60">
+                面向长视频平台的片尾互动能力演示，用更强的参与感、生成感和转化感，证明 AI 不是附加玩法，而是新的产品链路入口。
+              </p>
+
+              <div className="mt-5 flex flex-wrap gap-2 text-sm text-white/74">
+                {["互动预告", "个性化生成", "片尾转化", "AI 情绪理解"].map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full border border-white/[0.08] bg-white/[0.05] px-4 py-2 ring-1 ring-white/[0.03]"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
             </div>
-            <div className="flex flex-wrap gap-2 text-sm text-white/74">
-              {["互动预告", "个性化生成", "片尾转化", "AI 情绪理解"].map((item) => (
-                <span
-                  key={item}
-                  className="rounded-full bg-white/[0.05] px-4 py-2 ring-1 ring-white/[0.08]"
+
+            <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-1">
+              {HERO_HIGHLIGHTS.map(([title, detail]) => (
+                <div
+                  key={title}
+                  className="rounded-[24px] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.02))] p-4 shadow-[0_18px_36px_rgba(0,0,0,0.16)]"
                 >
-                  {item}
-                </span>
+                  <p className="text-sm font-medium text-[#7de8ff]">{title}</p>
+                  <p className="mt-3 text-sm leading-6 text-white/60">{detail}</p>
+                </div>
               ))}
             </div>
+          </div>
+
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            {[
+              ["目标链路", "片尾预告 -> 互动选择 -> AI 生成 -> 预约转化"],
+              ["演示重点", "让评委同时看到剧情反馈、数据反馈和商业价值反馈"],
+              ["当前状态", playerStatus],
+            ].map(([title, detail]) => (
+              <div
+                key={title}
+                className="rounded-[22px] border border-white/[0.06] bg-black/18 px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]"
+              >
+                <p className="text-[11px] tracking-[0.24em] text-white/38 uppercase">{title}</p>
+                <p className="mt-2 text-sm leading-6 text-white/68">{detail}</p>
+              </div>
+            ))}
           </div>
         </section>
 
         <div className="grid flex-1 gap-6 xl:grid-cols-[minmax(0,1fr)_400px]">
           <section className="min-w-0">
             <div
-              className="overflow-hidden rounded-[28px] bg-[#0f0f0f] shadow-[0_24px_70px_rgba(0,0,0,0.35)]"
+              className="relative overflow-hidden rounded-[34px] border border-white/[0.06] bg-[linear-gradient(180deg,rgba(21,24,27,0.98),rgba(12,12,12,0.98))] p-[10px] shadow-[0_28px_100px_rgba(0,0,0,0.34)] ring-1 ring-white/[0.03]"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
+              <div className="pointer-events-none absolute left-8 right-8 top-0 h-16 bg-[radial-gradient(circle_at_top,rgba(125,232,255,0.12),transparent_72%)]" />
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-3 rounded-[22px] border border-white/[0.05] bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.015))] px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(125,232,255,0.48),rgba(18,55,70,0.94))] shadow-[0_0_20px_rgba(125,232,255,0.2)]">
+                    <svg viewBox="0 0 24 24" className="h-4 w-4 text-[#d7fbff]" fill="none" stroke="currentColor" strokeWidth="1.8">
+                      <path d="M5 19h14" strokeLinecap="round" />
+                      <path d="M7 16V8" strokeLinecap="round" />
+                      <path d="M12 16V5" strokeLinecap="round" />
+                      <path d="M17 16v-6" strokeLinecap="round" />
+                    </svg>
+                  </span>
+                  <div>
+                    <p className="text-[10px] tracking-[0.28em] text-[#7de8ff] uppercase">Interactive Trailer Engine</p>
+                    <p className="mt-1 text-sm text-white/68">剧情响应、分支生成与转化承接在同一播放器内完成</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2 text-xs text-white/58">
+                  {[
+                    userChoice ? `已选分支 ${userChoice}` : "等待选择",
+                    generatedVersion ? versionTitle : "未生成版本",
+                    reserved ? "预约已触发" : "转化待触发",
+                  ].map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-full border border-white/[0.06] bg-white/[0.04] px-3 py-1.5"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="overflow-hidden rounded-[28px] bg-[#0f0f0f] shadow-[0_24px_70px_rgba(0,0,0,0.35)]">
               <div className="relative aspect-video overflow-hidden bg-black">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_14%_40%,rgba(239,215,158,0.28),transparent_28%),radial-gradient(circle_at_62%_34%,rgba(255,255,255,0.12),transparent_24%),radial-gradient(circle_at_80%_72%,rgba(130,90,60,0.34),transparent_25%)]" />
                 {userChoice && phase !== "intro" && phase !== "choice" && (
@@ -1116,35 +1196,259 @@ export default function Page() {
                   </div>
                 </div>
               </div>
+              </div>
             </div>
 
-            <div className="mt-7">
-              <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-[22px] font-semibold">用户评价</h3>
-                <div className="flex items-center gap-3 text-white/42">
-                  <button type="button" className="text-3xl transition-colors duration-300 hover:text-white/82">‹</button>
-                  <span className="text-[36px] font-light leading-none">4</span>
-                  <button type="button" className="text-3xl transition-colors duration-300 hover:text-white/82">›</button>
+            <section className="mt-7 overflow-hidden rounded-[30px] border border-[#1fd7ff]/10 bg-[linear-gradient(135deg,rgba(13,18,24,0.96),rgba(17,17,17,0.98))] p-5 shadow-[0_22px_80px_rgba(0,0,0,0.24)] ring-1 ring-white/[0.04] md:p-6">
+              <div className="mb-6 flex justify-center">
+                <div className="inline-flex items-center gap-4 rounded-full border border-[#1fd7ff]/12 bg-[linear-gradient(180deg,rgba(18,31,39,0.92),rgba(17,17,17,0.82))] px-4 py-3 shadow-[0_18px_44px_rgba(0,0,0,0.22)] backdrop-blur-md">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(125,232,255,0.56),rgba(17,53,68,0.94))] shadow-[0_0_24px_rgba(125,232,255,0.26)]">
+                    <svg viewBox="0 0 24 24" className="h-5 w-5 text-[#d7fbff]" fill="none" stroke="currentColor" strokeWidth="1.8">
+                      <path d="M5 12h10" strokeLinecap="round" />
+                      <path d="m11 7 5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
+                      <circle cx="6" cy="12" r="2.4" fill="currentColor" stroke="none" />
+                    </svg>
+                  </span>
+                  <div>
+                    <p className="text-[10px] tracking-[0.28em] text-[#7de8ff] uppercase">Insight Flow</p>
+                    <p className="mt-1 text-sm text-white/72">互动结果正在流向实时效果看板</p>
+                  </div>
                 </div>
               </div>
 
-              <div className="grid gap-4 lg:grid-cols-3">
-                {REVIEWS.map(([name, text]) => (
-                  <div key={name} className="rounded-[24px] border border-white/8 bg-[#1a1a1a] p-5 shadow-[0_14px_40px_rgba(0,0,0,0.2)]">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[linear-gradient(135deg,#1fd8ff,#0eabff)] text-sm font-semibold text-[#032028]">
-                        {name.slice(0, 1)}
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                <div className="max-w-3xl">
+                  <p className="text-[11px] tracking-[0.3em] text-[#7de8ff] uppercase">Live Metrics</p>
+                  <h3 className="mt-3 text-[28px] font-semibold text-white">实时效果看板</h3>
+                  <p className="mt-3 text-sm leading-7 text-white/62">
+                    模拟展示 AI 互动预告在播放链路中的用户行为、内容生成与转化效果
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <div className="rounded-full border border-white/8 bg-white/[0.04] px-4 py-2 text-sm text-white/62">
+                    已联动事件 <span className="ml-2 text-[#7de8ff]">{dashboardTriggeredCount}/6</span>
+                  </div>
+                  <div className="rounded-full border border-white/8 bg-white/[0.04] px-4 py-2 text-sm text-white/62">
+                    当前阶段 <span className="ml-2 text-[#7de8ff]">{playerStatus}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 grid gap-5 xl:grid-cols-[1.05fr_1.15fr]">
+                <div className="rounded-[26px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.18)]">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-[11px] tracking-[0.26em] text-[#7de8ff] uppercase">实时埋点流</p>
+                      <h4 className="mt-2 text-[22px] font-semibold text-white">实时埋点流</h4>
+                      <p className="mt-3 max-w-xl text-sm leading-7 text-white/60">
+                        从用户选择到专属预告生成，关键行为被转化为可运营的数据事件。
+                      </p>
+                    </div>
+                    <div className="rounded-full bg-white/[0.04] px-3 py-1 text-xs tracking-[0.18em] text-white/42 uppercase">
+                      {eventLogs.length} 条联动日志
+                    </div>
+                  </div>
+
+                  <div className="mt-5 max-h-[430px] space-y-3 overflow-y-auto pr-1">
+                    {dashboardEvents.map((item, index) => {
+                      const isWaiting = item.status === "等待中";
+                      const isWorking = item.status === "生成中" || item.status === "播放中";
+                      const isConversion = item.status === "已转化" || item.status === "待转化";
+
+                      return (
+                        <div
+                          key={item.event}
+                          className={`relative overflow-hidden rounded-[22px] border px-4 py-4 transition-all duration-300 ${
+                            item.active
+                              ? "border-[#1fd7ff]/12 bg-[linear-gradient(180deg,rgba(13,29,38,0.46),rgba(255,255,255,0.02))]"
+                              : "border-white/6 bg-white/[0.02]"
+                          }`}
+                        >
+                          {index < dashboardEvents.length - 1 && (
+                            <div className="pointer-events-none absolute left-[21px] top-[44px] h-[calc(100%-16px)] w-px bg-[linear-gradient(180deg,rgba(125,232,255,0.32),rgba(255,255,255,0))]" />
+                          )}
+                          <div className="flex gap-4">
+                            <div className="pt-1">
+                              <span
+                                className={`block h-3 w-3 rounded-full transition-all duration-300 ${
+                                  isWaiting
+                                    ? "bg-white/18"
+                                    : isWorking
+                                      ? "bg-[#7de8ff] shadow-[0_0_18px_rgba(125,232,255,0.5)] animate-pulse"
+                                      : isConversion
+                                        ? "bg-[#ffd58f] shadow-[0_0_16px_rgba(255,213,143,0.36)]"
+                                        : "bg-[#7de8ff] shadow-[0_0_14px_rgba(125,232,255,0.36)]"
+                                }`}
+                              />
+                            </div>
+
+                            <div className="min-w-0 flex-1">
+                              <div className="flex flex-wrap items-center justify-between gap-3">
+                                <div className="flex min-w-0 flex-wrap items-center gap-3">
+                                  <span className="text-xs tracking-[0.16em] text-white/38">{item.time}</span>
+                                  <span className="rounded-full bg-black/22 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-white/58">
+                                    {item.event}
+                                  </span>
+                                </div>
+                                <span
+                                  className={`rounded-full px-3 py-1 text-[11px] font-medium tracking-[0.16em] ${
+                                    isWaiting
+                                      ? "bg-white/[0.04] text-white/40"
+                                      : isWorking
+                                        ? "bg-[#123341] text-[#7de8ff]"
+                                        : isConversion
+                                          ? "bg-[#3f2d15] text-[#ffdba6]"
+                                          : "bg-[#102735] text-[#bfefff]"
+                                  }`}
+                                >
+                                  {item.status}
+                                </span>
+                              </div>
+                              <p className="mt-3 text-sm leading-7 text-white/64">{item.description}</p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {DASHBOARD_METRICS.map((metric) => (
+                    <div
+                      key={metric.title}
+                      className="rounded-[24px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.16)]"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <p className="text-sm text-white/52">{metric.title}</p>
+                          <p className="mt-2 text-[30px] font-semibold text-[#7de8ff]">{metric.ai}%</p>
+                        </div>
+                        <div className="rounded-full bg-[#102735] px-3 py-1 text-sm font-semibold text-[#7de8ff]">
+                          {metric.uplift}
+                        </div>
                       </div>
+
+                      <div className="mt-4 space-y-3">
+                        <div>
+                          <div className="mb-2 flex items-center justify-between text-xs text-white/42">
+                            <span>普通预告</span>
+                            <span>{metric.normal}%</span>
+                          </div>
+                          <div className="h-2.5 overflow-hidden rounded-full bg-white/[0.06]">
+                            <div
+                              className="h-full rounded-full bg-[linear-gradient(90deg,rgba(255,255,255,0.2),rgba(255,255,255,0.08))]"
+                              style={{ width: `${metric.normal}%` }}
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="mb-2 flex items-center justify-between text-xs">
+                            <span className="text-white/52">AI互动预告</span>
+                            <span className="font-semibold text-[#7de8ff]">{metric.ai}%</span>
+                          </div>
+                          <div className="h-2.5 overflow-hidden rounded-full bg-[#0e1b22]">
+                            <div
+                              className="h-full rounded-full bg-[linear-gradient(90deg,#18d8ff,#7de8ff)] shadow-[0_0_18px_rgba(31,216,255,0.22)]"
+                              style={{ width: `${metric.ai}%` }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="mt-4 text-sm leading-6 text-white/54">{metric.hint}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-6 rounded-[28px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015))] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.16)]">
+                <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                  <div>
+                    <p className="text-[11px] tracking-[0.26em] text-[#7de8ff] uppercase">效果对比图</p>
+                    <h4 className="mt-2 text-[24px] font-semibold text-white">普通预告 vs AI互动预告</h4>
+                    <p className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
+                      数据为试点效果假设，用于展示互动预告对用户参与和转化链路的潜在提升。
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-6 space-y-5">
+                  {DASHBOARD_METRICS.map((metric) => (
+                    <div key={metric.title} className="grid gap-4 rounded-[22px] bg-black/14 px-4 py-4 md:grid-cols-[180px_minmax(0,1fr)_92px] md:items-center">
                       <div>
-                        <p className="font-medium">{name}</p>
-                        <p className="text-sm text-[#ff9731]">★★★★★ 强烈推荐</p>
+                        <p className="text-sm font-medium text-white/88">{metric.title}</p>
+                        <p className="mt-1 text-xs text-white/40">普通 {metric.normal} / AI {metric.ai}</p>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-3">
+                          <span className="w-12 shrink-0 text-xs text-white/38">普通</span>
+                          <div className="h-3 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
+                            <div
+                              className="h-full rounded-full bg-[linear-gradient(90deg,rgba(255,255,255,0.18),rgba(255,255,255,0.08))]"
+                              style={{ width: `${metric.normal}%` }}
+                            />
+                          </div>
+                          <span className="w-10 shrink-0 text-right text-xs text-white/46">{metric.normal}</span>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <span className="w-12 shrink-0 text-xs text-[#7de8ff]">AI</span>
+                          <div className="h-3 flex-1 overflow-hidden rounded-full bg-[#0c1920]">
+                            <div
+                              className="h-full rounded-full bg-[linear-gradient(90deg,#16d8ff,#7de8ff)] shadow-[0_0_22px_rgba(22,216,255,0.22)]"
+                              style={{ width: `${metric.ai}%` }}
+                            />
+                          </div>
+                          <span className="w-10 shrink-0 text-right text-xs font-semibold text-[#7de8ff]">
+                            {metric.ai}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="justify-self-start rounded-full bg-[#102735] px-3 py-1.5 text-sm font-semibold text-[#7de8ff] md:justify-self-end">
+                        {metric.uplift}
                       </div>
                     </div>
-                    <p className="mt-4 text-sm leading-7 text-white/68">{text}</p>
+                  ))}
+                </div>
+
+                <div className="mt-6 rounded-[24px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015))] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.16)]">
+                  <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                    <div className="max-w-xl">
+                      <p className="text-[11px] tracking-[0.3em] text-[#7de8ff] uppercase">产品价值</p>
+                      <h4 className="mt-2 text-[24px] font-semibold text-white">把片尾预告变成产品转化入口</h4>
+                      <p className="mt-3 text-sm leading-7 text-white/62">
+                        提升预告完播率、互动率和预约转化，同时沉淀更细的情绪选择数据，反哺推荐。
+                      </p>
+                    </div>
+
+                    <div className="grid flex-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                      {PLATFORM_VALUES.map(([title, detail]) => (
+                        <div
+                          key={title}
+                          className="rounded-[22px] bg-white/[0.04] p-4 ring-1 ring-white/[0.05]"
+                        >
+                          <p className="text-sm text-[#7fe6ff]">{title}</p>
+                          <p className="mt-3 text-sm leading-6 text-white/62">{detail}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                ))}
+                </div>
+
+                <div className="mt-6 rounded-[22px] border border-[#1fd7ff]/10 bg-[linear-gradient(90deg,rgba(15,33,42,0.94),rgba(18,18,18,0.82))] px-5 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+                  <div className="flex items-start gap-3">
+                    <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-[#7de8ff] shadow-[0_0_16px_rgba(125,232,255,0.46)]" />
+                    <p className="text-sm leading-7 text-white/72">
+                      AI互动预告的价值不只是让预告更好玩，而是把片尾流失点改造成可交互、可生成、可转化的数据入口。
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
+            </section>
           </section>
 
           <aside className="space-y-5">
@@ -1444,241 +1748,6 @@ export default function Page() {
             </section>
           </aside>
         </div>
-
-        <section className="mt-7 overflow-hidden rounded-[30px] border border-[#1fd7ff]/10 bg-[linear-gradient(135deg,rgba(13,18,24,0.96),rgba(17,17,17,0.98))] p-5 shadow-[0_22px_80px_rgba(0,0,0,0.24)] ring-1 ring-white/[0.04] md:p-6">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-3xl">
-              <p className="text-[11px] tracking-[0.3em] text-[#7de8ff] uppercase">Live Metrics</p>
-              <h3 className="mt-3 text-[28px] font-semibold text-white">实时效果看板</h3>
-              <p className="mt-3 text-sm leading-7 text-white/62">
-                模拟展示 AI 互动预告在播放链路中的用户行为、内容生成与转化效果
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <div className="rounded-full border border-white/8 bg-white/[0.04] px-4 py-2 text-sm text-white/62">
-                已联动事件 <span className="ml-2 text-[#7de8ff]">{dashboardTriggeredCount}/6</span>
-              </div>
-              <div className="rounded-full border border-white/8 bg-white/[0.04] px-4 py-2 text-sm text-white/62">
-                当前阶段 <span className="ml-2 text-[#7de8ff]">{playerStatus}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-6 grid gap-5 xl:grid-cols-[1.05fr_1.15fr]">
-            <div className="rounded-[26px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.18)]">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-[11px] tracking-[0.26em] text-[#7de8ff] uppercase">实时埋点流</p>
-                  <h4 className="mt-2 text-[22px] font-semibold text-white">实时埋点流</h4>
-                  <p className="mt-3 max-w-xl text-sm leading-7 text-white/60">
-                    从用户选择到专属预告生成，关键行为被转化为可运营的数据事件。
-                  </p>
-                </div>
-                <div className="rounded-full bg-white/[0.04] px-3 py-1 text-xs tracking-[0.18em] text-white/42 uppercase">
-                  {eventLogs.length} 条联动日志
-                </div>
-              </div>
-
-              <div className="mt-5 max-h-[430px] space-y-3 overflow-y-auto pr-1">
-                {dashboardEvents.map((item, index) => {
-                  const isWaiting = item.status === "等待中";
-                  const isWorking = item.status === "生成中" || item.status === "播放中";
-                  const isConversion = item.status === "已转化" || item.status === "待转化";
-
-                  return (
-                    <div
-                      key={item.event}
-                      className={`relative overflow-hidden rounded-[22px] border px-4 py-4 transition-all duration-300 ${
-                        item.active
-                          ? "border-[#1fd7ff]/12 bg-[linear-gradient(180deg,rgba(13,29,38,0.46),rgba(255,255,255,0.02))]"
-                          : "border-white/6 bg-white/[0.02]"
-                      }`}
-                    >
-                      {index < dashboardEvents.length - 1 && (
-                        <div className="pointer-events-none absolute left-[21px] top-[44px] h-[calc(100%-16px)] w-px bg-[linear-gradient(180deg,rgba(125,232,255,0.32),rgba(255,255,255,0))]" />
-                      )}
-                      <div className="flex gap-4">
-                        <div className="pt-1">
-                          <span
-                            className={`block h-3 w-3 rounded-full transition-all duration-300 ${
-                              isWaiting
-                                ? "bg-white/18"
-                                : isWorking
-                                  ? "bg-[#7de8ff] shadow-[0_0_18px_rgba(125,232,255,0.5)] animate-pulse"
-                                  : isConversion
-                                    ? "bg-[#ffd58f] shadow-[0_0_16px_rgba(255,213,143,0.36)]"
-                                    : "bg-[#7de8ff] shadow-[0_0_14px_rgba(125,232,255,0.36)]"
-                            }`}
-                          />
-                        </div>
-
-                        <div className="min-w-0 flex-1">
-                          <div className="flex flex-wrap items-center justify-between gap-3">
-                            <div className="flex min-w-0 flex-wrap items-center gap-3">
-                              <span className="text-xs tracking-[0.16em] text-white/38">{item.time}</span>
-                              <span className="rounded-full bg-black/22 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-white/58">
-                                {item.event}
-                              </span>
-                            </div>
-                            <span
-                              className={`rounded-full px-3 py-1 text-[11px] font-medium tracking-[0.16em] ${
-                                isWaiting
-                                  ? "bg-white/[0.04] text-white/40"
-                                  : isWorking
-                                    ? "bg-[#123341] text-[#7de8ff]"
-                                    : isConversion
-                                      ? "bg-[#3f2d15] text-[#ffdba6]"
-                                      : "bg-[#102735] text-[#bfefff]"
-                              }`}
-                            >
-                              {item.status}
-                            </span>
-                          </div>
-                          <p className="mt-3 text-sm leading-7 text-white/64">{item.description}</p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              {DASHBOARD_METRICS.map((metric) => (
-                <div
-                  key={metric.title}
-                  className="rounded-[24px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.16)]"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-sm text-white/52">{metric.title}</p>
-                      <p className="mt-2 text-[30px] font-semibold text-[#7de8ff]">{metric.ai}%</p>
-                    </div>
-                    <div className="rounded-full bg-[#102735] px-3 py-1 text-sm font-semibold text-[#7de8ff]">
-                      {metric.uplift}
-                    </div>
-                  </div>
-
-                  <div className="mt-4 space-y-3">
-                    <div>
-                      <div className="mb-2 flex items-center justify-between text-xs text-white/42">
-                        <span>普通预告</span>
-                        <span>{metric.normal}%</span>
-                      </div>
-                      <div className="h-2.5 overflow-hidden rounded-full bg-white/[0.06]">
-                        <div
-                          className="h-full rounded-full bg-[linear-gradient(90deg,rgba(255,255,255,0.2),rgba(255,255,255,0.08))]"
-                          style={{ width: `${metric.normal}%` }}
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="mb-2 flex items-center justify-between text-xs">
-                        <span className="text-white/52">AI互动预告</span>
-                        <span className="font-semibold text-[#7de8ff]">{metric.ai}%</span>
-                      </div>
-                      <div className="h-2.5 overflow-hidden rounded-full bg-[#0e1b22]">
-                        <div
-                          className="h-full rounded-full bg-[linear-gradient(90deg,#18d8ff,#7de8ff)] shadow-[0_0_18px_rgba(31,216,255,0.22)]"
-                          style={{ width: `${metric.ai}%` }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="mt-4 text-sm leading-6 text-white/54">{metric.hint}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-6 rounded-[28px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015))] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.16)]">
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <p className="text-[11px] tracking-[0.26em] text-[#7de8ff] uppercase">效果对比图</p>
-                <h4 className="mt-2 text-[24px] font-semibold text-white">普通预告 vs AI互动预告</h4>
-                <p className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
-                  数据为试点效果假设，用于展示互动预告对用户参与和转化链路的潜在提升。
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-6 space-y-5">
-              {DASHBOARD_METRICS.map((metric) => (
-                <div key={metric.title} className="grid gap-4 rounded-[22px] bg-black/14 px-4 py-4 md:grid-cols-[180px_minmax(0,1fr)_92px] md:items-center">
-                  <div>
-                    <p className="text-sm font-medium text-white/88">{metric.title}</p>
-                    <p className="mt-1 text-xs text-white/40">普通 {metric.normal} / AI {metric.ai}</p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <span className="w-12 shrink-0 text-xs text-white/38">普通</span>
-                      <div className="h-3 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
-                        <div
-                          className="h-full rounded-full bg-[linear-gradient(90deg,rgba(255,255,255,0.18),rgba(255,255,255,0.08))]"
-                          style={{ width: `${metric.normal}%` }}
-                        />
-                      </div>
-                      <span className="w-10 shrink-0 text-right text-xs text-white/46">{metric.normal}</span>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <span className="w-12 shrink-0 text-xs text-[#7de8ff]">AI</span>
-                      <div className="h-3 flex-1 overflow-hidden rounded-full bg-[#0c1920]">
-                        <div
-                          className="h-full rounded-full bg-[linear-gradient(90deg,#16d8ff,#7de8ff)] shadow-[0_0_22px_rgba(22,216,255,0.22)]"
-                          style={{ width: `${metric.ai}%` }}
-                        />
-                      </div>
-                      <span className="w-10 shrink-0 text-right text-xs font-semibold text-[#7de8ff]">
-                        {metric.ai}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="justify-self-start rounded-full bg-[#102735] px-3 py-1.5 text-sm font-semibold text-[#7de8ff] md:justify-self-end">
-                    {metric.uplift}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-6 rounded-[24px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015))] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.16)]">
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                <div className="max-w-xl">
-                  <p className="text-[11px] tracking-[0.3em] text-[#7de8ff] uppercase">产品价值</p>
-                  <h4 className="mt-2 text-[24px] font-semibold text-white">把片尾预告变成产品转化入口</h4>
-                  <p className="mt-3 text-sm leading-7 text-white/62">
-                    提升预告完播率、互动率和预约转化，同时沉淀更细的情绪选择数据，反哺推荐。
-                  </p>
-                </div>
-
-                <div className="grid flex-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                  {PLATFORM_VALUES.map(([title, detail]) => (
-                    <div
-                      key={title}
-                      className="rounded-[22px] bg-white/[0.04] p-4 ring-1 ring-white/[0.05]"
-                    >
-                      <p className="text-sm text-[#7fe6ff]">{title}</p>
-                      <p className="mt-3 text-sm leading-6 text-white/62">{detail}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 rounded-[22px] border border-[#1fd7ff]/10 bg-[linear-gradient(90deg,rgba(15,33,42,0.94),rgba(18,18,18,0.82))] px-5 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
-              <div className="flex items-start gap-3">
-                <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-[#7de8ff] shadow-[0_0_16px_rgba(125,232,255,0.46)]" />
-                <p className="text-sm leading-7 text-white/72">
-                  AI互动预告的价值不只是让预告更好玩，而是把片尾流失点改造成可交互、可生成、可转化的数据入口。
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
 
         <section className="mt-6 grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
           <div className="rounded-[28px] bg-[#171717] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.2)] ring-1 ring-white/[0.05]">
