@@ -883,43 +883,40 @@ export default function Page() {
                 <button type="button" className="text-white/32 transition-colors duration-300 hover:text-white/72">›</button>
               </div>
 
-              <p className="mt-4 text-sm leading-7 text-white/60">
-                腾讯视频热播都市情感剧。把爱情、关系与自我成长放进同一条人生轨迹里。
-              </p>
+              <div className="mt-4 grid gap-4 md:grid-cols-[minmax(0,1fr)_168px]">
+                <div className="min-w-0">
+                  <p className="text-sm leading-7 text-white/60">
+                    腾讯视频热播都市情感剧。把爱情、关系与自我成长放进同一条人生轨迹里。
+                  </p>
 
-              <div className="mt-5 flex flex-wrap gap-2 text-sm text-white/58">
-                {STORY_TAGS.map((tag) => (
-                  <span key={tag}>{tag}</span>
-                ))}
-              </div>
-
-              <div className="mt-5 flex items-center gap-3">
-                <div className="rounded-full bg-white/8 px-4 py-2 text-[15px] font-semibold">8.9分</div>
-                <div className="rounded-full bg-white/8 px-4 py-2 text-[15px] font-semibold">10894</div>
-                <div className="rounded-full bg-[#1b3940] px-4 py-2 text-[15px] font-semibold text-[#7de8ff]">腾讯视频独播</div>
-              </div>
-
-              <div className="mt-6 rounded-[24px] bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4 shadow-[0_18px_48px_rgba(0,0,0,0.24)] ring-1 ring-white/[0.05]">
-                <div className="mx-auto max-w-[248px]">
-                  <div className="mb-3 flex items-center justify-between text-[11px] tracking-[0.2em] text-white/42 uppercase">
-                    <span>官方海报</span>
-                    <span>Rose Story</span>
+                  <div className="mt-5 flex flex-wrap gap-2 text-sm text-white/58">
+                    {STORY_TAGS.map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
                   </div>
-                  <div className="relative overflow-hidden rounded-[24px] shadow-[0_26px_60px_rgba(0,0,0,0.42)] ring-1 ring-white/[0.07]">
-                    <div className="pointer-events-none absolute inset-0 z-10 rounded-[24px] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]" />
-                    <img
-                      src="/rose-poster.jpg"
-                      alt="玫瑰的故事海报"
-                      className="aspect-[3/4.35] w-full object-cover object-center"
-                    />
-                    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04),transparent_28%,transparent_62%,rgba(0,0,0,0.42))]" />
-                    <div className="absolute inset-x-0 bottom-0 px-4 pb-4">
-                      <div className="rounded-2xl bg-black/42 px-3 py-3 backdrop-blur-sm">
-                        <p className="text-[10px] tracking-[0.22em] text-white/58 uppercase">剧集封面</p>
-                        <p className="mt-1 text-sm font-medium leading-6 text-white">
-                          从此世界在我面前，指向我想去的任何地方
-                        </p>
-                      </div>
+
+                  <div className="mt-5 flex flex-wrap items-center gap-3">
+                    <div className="rounded-full bg-white/8 px-4 py-2 text-[15px] font-semibold">8.9分</div>
+                    <div className="rounded-full bg-white/8 px-4 py-2 text-[15px] font-semibold">10894</div>
+                    <div className="rounded-full bg-[#1b3940] px-4 py-2 text-[15px] font-semibold text-[#7de8ff]">
+                      腾讯视频独播
+                    </div>
+                  </div>
+                </div>
+
+                <div className="md:justify-self-end">
+                  <div className="rounded-[22px] bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-2 shadow-[0_18px_48px_rgba(0,0,0,0.24)] ring-1 ring-white/[0.05]">
+                    <div className="mb-2 flex items-center justify-between px-1 text-[10px] tracking-[0.2em] text-white/42 uppercase">
+                      <span>官方海报</span>
+                      <span>Rose Story</span>
+                    </div>
+                    <div className="relative overflow-hidden rounded-[20px] shadow-[0_22px_52px_rgba(0,0,0,0.36)] ring-1 ring-white/[0.07]">
+                      <div className="pointer-events-none absolute inset-0 z-10 rounded-[20px] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]" />
+                      <img
+                        src="/rose-poster.jpg"
+                        alt="玫瑰的故事海报"
+                        className="aspect-[3/4.4] w-[152px] object-cover object-center"
+                      />
                     </div>
                   </div>
                 </div>
